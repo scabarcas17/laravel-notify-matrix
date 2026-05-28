@@ -23,7 +23,7 @@ class NotifyMatrixServiceProvider extends ServiceProvider
                 __DIR__ . '/../config/notify-matrix.php' => config_path('notify-matrix.php'),
             ], 'notify-matrix-config');
 
-            $this->publishes([
+            $this->publishesMigrations([
                 __DIR__ . '/../database/migrations' => database_path('migrations'),
             ], 'notify-matrix-migrations');
         }
