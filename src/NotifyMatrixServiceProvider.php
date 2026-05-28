@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Scabarcas\LaravelNotifyMatrix;
 
+use Illuminate\Notifications\Events\NotificationSending;
 use Illuminate\Support\ServiceProvider;
 use Scabarcas\LaravelNotifyMatrix\Contracts\GroupResolver;
 use Scabarcas\LaravelNotifyMatrix\Contracts\PreferenceRepository;
+use Scabarcas\LaravelNotifyMatrix\Listeners\EnforcePreferences;
 use Scabarcas\LaravelNotifyMatrix\Repositories\EloquentPreferenceRepository;
 use Scabarcas\LaravelNotifyMatrix\Resolvers\AttributeGroupResolver;
 
@@ -26,6 +28,8 @@ class NotifyMatrixServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->app['events']->listen(NotificationSending::class, EnforcePreferences::class);
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/notify-matrix.php' => config_path('notify-matrix.php'),
