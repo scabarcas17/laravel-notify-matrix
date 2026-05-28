@@ -17,7 +17,8 @@ final class PreferenceManager
         private readonly PreferenceRepository $repository,
         private readonly GroupResolver $resolver,
         private readonly Repository $config,
-    ) {}
+    ) {
+    }
 
     public function wants(Model $notifiable, string $groupOrClass, string $channel): bool
     {
@@ -85,10 +86,12 @@ final class PreferenceManager
     {
         $groupPolicy = $this->config->get("notify-matrix.groups.{$group}.default_policy");
 
-        if ($groupPolicy !== null) {
-            return (string) $groupPolicy;
+        if (is_string($groupPolicy)) {
+            return $groupPolicy;
         }
 
-        return (string) $this->config->get('notify-matrix.default_policy', 'opt_in');
+        $globalPolicy = $this->config->get('notify-matrix.default_policy', 'opt_in');
+
+        return is_string($globalPolicy) ? $globalPolicy : 'opt_in';
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Scabarcas\LaravelNotifyMatrix\Listeners;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Events\NotificationSending;
 use Scabarcas\LaravelNotifyMatrix\Concerns\HasNotificationPreferences;
 use Scabarcas\LaravelNotifyMatrix\Exceptions\UnknownNotificationGroupException;
@@ -13,13 +14,14 @@ final class EnforcePreferences
 {
     public function __construct(
         private readonly PreferenceManager $manager,
-    ) {}
+    ) {
+    }
 
     public function handle(NotificationSending $event): ?bool
     {
         $notifiable = $event->notifiable;
 
-        if (! $this->notifiableUsesTrait($notifiable)) {
+        if (!$notifiable instanceof Model || !$this->notifiableUsesTrait($notifiable)) {
             return null;
         }
 
@@ -32,12 +34,8 @@ final class EnforcePreferences
         return $this->manager->wants($notifiable, $group, $event->channel);
     }
 
-    private function notifiableUsesTrait(mixed $notifiable): bool
+    private function notifiableUsesTrait(Model $notifiable): bool
     {
-        if (! is_object($notifiable)) {
-            return false;
-        }
-
         return in_array(
             HasNotificationPreferences::class,
             class_uses_recursive($notifiable),

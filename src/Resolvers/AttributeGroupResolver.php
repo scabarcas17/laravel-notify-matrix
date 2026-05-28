@@ -14,10 +14,15 @@ final class AttributeGroupResolver implements GroupResolver
 {
     public function __construct(
         private readonly Repository $config,
-    ) {}
+    ) {
+    }
 
     public function resolve(string $notificationClass): string
     {
+        if (!class_exists($notificationClass)) {
+            throw UnknownNotificationGroupException::forClass($notificationClass);
+        }
+
         $attributes = (new ReflectionClass($notificationClass))
             ->getAttributes(NotificationGroup::class);
 
@@ -27,8 +32,8 @@ final class AttributeGroupResolver implements GroupResolver
 
         $map = (array) $this->config->get('notify-matrix.class_map', []);
 
-        if (isset($map[$notificationClass])) {
-            return (string) $map[$notificationClass];
+        if (isset($map[$notificationClass]) && is_string($map[$notificationClass])) {
+            return $map[$notificationClass];
         }
 
         throw UnknownNotificationGroupException::forClass($notificationClass);

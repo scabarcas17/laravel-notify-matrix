@@ -7,6 +7,14 @@ namespace Scabarcas\LaravelNotifyMatrix\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * @property int        $id
+ * @property string     $notifiable_type
+ * @property int|string $notifiable_id
+ * @property string     $group
+ * @property string     $channel
+ * @property bool       $enabled
+ */
 class NotificationPreference extends Model
 {
     protected $fillable = [
@@ -23,9 +31,14 @@ class NotificationPreference extends Model
 
     public function getTable(): string
     {
-        return (string) config('notify-matrix.table', 'notification_preferences');
+        $table = config('notify-matrix.table', 'notification_preferences');
+
+        return is_string($table) ? $table : 'notification_preferences';
     }
 
+    /**
+     * @return MorphTo<Model, $this>
+     */
     public function notifiable(): MorphTo
     {
         return $this->morphTo();

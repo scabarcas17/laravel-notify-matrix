@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Scabarcas\LaravelNotifyMatrix;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Notifications\Events\NotificationSending;
 use Illuminate\Support\ServiceProvider;
 use Scabarcas\LaravelNotifyMatrix\Contracts\GroupResolver;
@@ -28,7 +29,8 @@ class NotifyMatrixServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->app['events']->listen(NotificationSending::class, EnforcePreferences::class);
+        $this->app->make(Dispatcher::class)
+            ->listen(NotificationSending::class, EnforcePreferences::class);
 
         if ($this->app->runningInConsole()) {
             $this->publishes([

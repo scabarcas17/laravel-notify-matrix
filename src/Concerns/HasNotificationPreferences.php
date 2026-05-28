@@ -14,6 +14,9 @@ use Scabarcas\LaravelNotifyMatrix\PreferenceManager;
  */
 trait HasNotificationPreferences
 {
+    /**
+     * @return MorphMany<NotificationPreference, $this>
+     */
     public function preferences(): MorphMany
     {
         return $this->morphMany(NotificationPreference::class, 'notifiable');

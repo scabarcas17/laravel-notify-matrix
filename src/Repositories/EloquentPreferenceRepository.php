@@ -55,7 +55,9 @@ final class EloquentPreferenceRepository implements PreferenceRepository
             $query->where('group', $group);
         }
 
-        return $query->delete();
+        $deleted = $query->delete();
+
+        return is_int($deleted) ? $deleted : 0;
     }
 
     /**
