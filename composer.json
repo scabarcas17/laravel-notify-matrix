@@ -1,0 +1,69 @@
+{
+    "name": "scabarcas/laravel-notify-matrix",
+    "description": "Manage per-user notification preferences in Laravel, with channel-level opt-in and opt-out.",
+    "type": "library",
+    "require": {
+        "php": "^8.3",
+        "illuminate/contracts": "^11.0|^12.0|^13.0",
+        "illuminate/database": "^11.0|^12.0|^13.0",
+        "illuminate/notifications": "^11.0|^12.0|^13.0",
+        "illuminate/support": "^11.0|^12.0|^13.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^4.4",
+        "phpstan/phpstan": "^2.1",
+        "larastan/larastan": "^3",
+        "laravel/pint": "1.29.1",
+        "laravel/framework": "^12.0|^13.0",
+        "orchestra/testbench": "^10.11|^11.0"
+    },
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "notifications",
+        "notification-preferences",
+        "notification-routing",
+        "user-preferences",
+        "channels",
+        "opt-in",
+        "opt-out",
+        "saas"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Scabarcas\\LaravelNotifyMatrix\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Scabarcas\\LaravelNotifyMatrix\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sebastian Cabarcas",
+            "email": "sebastianberrio45@hotmail.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "pest",
+        "test:coverage": "pest --coverage --min=80",
+        "format": "pint",
+        "analyse": "phpstan analyse"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Scabarcas\\LaravelNotifyMatrix\\NotifyMatrixServiceProvider"
+            ]
+        }
+    }
+}
